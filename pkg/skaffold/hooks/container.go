@@ -56,7 +56,7 @@ func runningImageSelector(image string) containerSelector {
 // namePatternSelector chooses containers that match the glob patterns for pod and container names
 func namePatternSelector(podName, containerName string) containerSelector {
 	return func(p v1.Pod, c v1.Container) (bool, error) {
-		if p.Status.Phase != v1.PodRunning {
+		if p.Status.Phase != v1.PodRunning || p.DeletionTimestamp != nil {
 			return false, nil
 		}
 		for _, status := range p.Status.ContainerStatuses {
